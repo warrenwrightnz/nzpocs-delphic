@@ -16,12 +16,12 @@ def search_nzpocs(search_text, search_in_text):
     # couldn't find match, return false
     return False
 
-# Open the first CSV file containing the codeset
-with open('c:/dev/Warren/nzpocs-observation-code-set-1-October-2022.csv', newline='', encoding='utf-8') as csvfile1:
+# Open the first CSV file containing the codeset relative to nzpocs folder
+with open('nzpocs-observation-code-set-1-October-2022.csv', newline='', encoding='utf-8') as csvfile1:
     nzpocs = csv.DictReader(csvfile1)
     
     # Open the second CSV file containing the test groups
-    with open('c:/dev/delphic/listestinfo/testmaster.csv', newline='', encoding='utf-8') as csvfile2:
+    with open('testmaster.csv', newline='', encoding='utf-8') as csvfile2:
         paltests = csv.DictReader(csvfile2)
         
         # Initialize a list to hold the matching codes, tests, and short descriptions
@@ -48,7 +48,7 @@ with open('c:/dev/Warren/nzpocs-observation-code-set-1-October-2022.csv', newlin
             nzpocs = csv.DictReader(csvfile1)
                     
         # Print the list of matching data
-        with open('C:/dev/warren/matching_testmaster2.csv','w', newline='', encoding='utf-8') as csvfilew:
+        with open('matching_testmaster.csv','w', newline='', encoding='utf-8') as csvfilew:
             matchwriter = csv.writer(csvfilew, dialect='excel')
             matchwriter.writerow(['TEST','SHORT_DESC','TEXT','"Potential LOINC CODE"','NZ_SHORT_NAME','COMPONENT'])
             matchwriter.writerows(matching_data)
