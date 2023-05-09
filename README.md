@@ -6,4 +6,4 @@ specify the filename and type in an argument
 
 nzpocs.py -f <inputfilename> -o <outputfilename> -s lis|eclair
 
-it should duap a file with each local test and potential LOINC code matches
+it should dump a file with each local test and potential LOINC code matches
