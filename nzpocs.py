@@ -49,7 +49,7 @@ def main():
                 # Loop through each row in the codeset CSV file
                 for nzpoc in nzpocs:
                     # Extract the text to search within from the relevant columns
-                    search_in_text = [nzpoc['COMPONENT']]
+                    search_in_text = [nzpoc['COMPONENT'],nzpoc['NZ_SHORT_NAME']]
                     #print(search_in_text)
                     if search_nzpocs(search_text,search_in_text):
                         matches+=1
