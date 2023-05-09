@@ -56,7 +56,7 @@ def main():
                         if args.source == "lis":
                             matching_data.append((paltest['test'], paltest['short_desc'],paltest['text'], nzpoc['CODE'],nzpoc['NZ_SHORT_NAME'],nzpoc['COMPONENT'],matches))
                         else:
-                            matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'], nzpoc['CODE'],nzpoc['NZ_SHORT_NAME'],nzpoc['COMPONENT'],matches))
+                            matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'],'', nzpoc['CODE'],nzpoc['NZ_SHORT_NAME'],nzpoc['COMPONENT'],matches))
                     # Reset the codeset CSV reader to the beginning of the file
                 if matches == 0:
                     if args.source == "lis":
