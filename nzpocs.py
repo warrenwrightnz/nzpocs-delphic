@@ -10,17 +10,19 @@ parser.add_argument("--source","-s", choices=['lis','eclair'])
 args = parser.parse_args()
 
 def search_nzpocs(search_text, search_in_text):
+    # print(search_text,search_in_text)
     
     nomatchlist = ['blood','urine','post','group','serum','plasma','specimen','by','in','test', '','.']
     for text in search_text:
-        # leave loop if text in nomatch list
         if text.lower() in nomatchlist:
-            return False
+            continue
+        # leave loop if text in nomatch list
         for search in search_in_text:
+            if search.lower in nomatchlist:
+                continue
             if text.lower() in search.lower():
                 # Add the matching code, test, and short description to the list
-                # print('search: ' + search + ' text: ' + text)
-                
+                #print( ' text:' + text + ' in: ' + search )
                 return True
     # couldn't find match, return false
     return False
