@@ -5,10 +5,11 @@ import json
 
 # parse an argument to define if operating on lis or eclair data and pass in the path for the input file
 parser = argparse.ArgumentParser()
-parser.add_argument("--inputfile", "-f", required=True)
+parser.add_argument("--inputfile", "-i", required=True)
 parser.add_argument("--outputfile", "-o", required=True)
 parser.add_argument("--source","-s", choices=['lis','eclair'])
 parser.add_argument("--type","-t", default="csv", choices=['csv','json'])
+parser.add_argument('--nomissmatches','-nm',action='store_true')
 args = parser.parse_args()
 
 def search_nzpocs(search_text, search_in_text):
@@ -30,6 +31,8 @@ def search_nzpocs(search_text, search_in_text):
     return False
 
 def main(): 
+    test_nomatches = 0
+    test_matches= 0
     # Open the CSV or json file containing the codeset relative to nzpocs folder
     if args.type == 'csv':
         pocsfname = 'nzpocs-observation-code-set-1-October-2022.csv'
@@ -72,10 +75,12 @@ def main():
                                 matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'],'', nzpoc['CODE'],nzpoc['NZ_SHORT_NAME'],nzpoc['COMPONENT'],matches))
                         # Reset the codeset CSV reader to the beginning of the file
                     if matches == 0:
-                        if args.source == "lis":
-                            matching_data.append((paltest['test'], paltest['short_desc'],paltest['text'],'','','','0'))
-                        else:
-                            matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'],'','','','','0'))
+                        test_nomatches +=1
+                        if not args.nomissmatches:
+                            if args.source == "lis":
+                                matching_data.append((paltest['test'], paltest['short_desc'],paltest['text'],'','','','0'))
+                            else:
+                                matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'],'','','','','0'))
                     nzpocsfile.seek(0)
                     nzpocs = csv.DictReader(nzpocsfile)
                 if args.type == 'json':
@@ -94,10 +99,14 @@ def main():
                             else:
                                 matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'],'', curr_code,value,matches))
                     if matches == 0:
-                        if args.source == "lis":
-                            matching_data.append((paltest['test'], paltest['short_desc'],paltest['text'],'','','','0'))
-                        else:
-                            matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'],'','','','','0'))
+                        test_nomatches+=1
+                        if not args.nomissmatches:
+                            if args.source == "lis":
+                                matching_data.append((paltest['test'], paltest['short_desc'],paltest['text'],'','','','0'))
+                            else:
+                                matching_data.append((paltest['OBSC_OBSID'], paltest['OBSC_DESC'],'','','','','0'))
+                if matches != 0:
+                    test_matches +=1
                                             
             # Print the list of matching data
             with open(os.path.abspath(args.outputfile),'w', newline='', encoding='utf-8') as csvfilew:
@@ -110,4 +119,6 @@ def main():
 
             #for data in matching_data:
             #    print(data)
+            total_tests = test_matches + test_nomatches
+            print(f"Matched {test_matches} tests. Was not able to match {test_nomatches} tests out of {total_tests} tests")
 main()
